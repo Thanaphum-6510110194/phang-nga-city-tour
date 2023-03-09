@@ -36,7 +36,11 @@ const PaymentPage = () => {
         try {
             const res = await Repo.Tourdata.getTourById(params.id as string);
             if (res) {
-                setTourData(res);
+                if (Array.isArray(res)) {
+                    setTourData(res);
+                } else {
+                    setTourData([res]);
+                }
             }
         } catch (error) {
             console.log(error);
@@ -46,8 +50,8 @@ const PaymentPage = () => {
     useEffect(() => {
         fetchData();
     }, [params.id]);
-    
-    const text_qrcode = 'ราคาที่ต้องจ่ายทั้งหมด ' + total_price.toLocaleString('en-US') + ' บาท' 
+
+    const text_qrcode = 'ราคาที่ต้องจ่ายทั้งหมด ' + total_price.toLocaleString('en-US') + ' บาท'
     useEffect(() => {
         qrcode.toDataURL(text_qrcode, (err, url) => {
             if (err) {

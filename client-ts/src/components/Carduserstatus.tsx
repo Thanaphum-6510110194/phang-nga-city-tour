@@ -3,6 +3,7 @@ import PaymentStatus from "../models/paymentStatus";
 import qrcode from 'qrcode';
 import Repo from '../repositories'
 import numberTour from "../models/numberTour";
+import Tour from '../models/tour';
 
 interface Props {
     statusData: PaymentStatus,
@@ -21,27 +22,38 @@ function CardUserStatus(props: Props) {
     const total_price = reviewData?.total_price;
 
     const [qrCode, setQrCode] = useState<string>('');
-
-    const tourLeft = Number(reviewData?.tour_left);
-    const tourPlus = tourLeft + quantity as number;
-    const updatenumber: numberTour = {
-        data: {
-            number: tourPlus,
-        }
-    }
+    const [tourLeft, setTourLeft] = useState<number>(0);
 
     const cancelPayment = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         if (window.confirm("คุณแน่ใจหรือไม่ว่าต้องการยกเลิกทัวร์ของคุณ")) {
             await Repo.Paymentdata.deletePayment(props.statusData.id);
+            const newTourLeft = tourLeft + quantity;
+            const updatenumber: numberTour = {
+                data: {
+                    number: newTourLeft,
+                }
+            }
             await Repo.Tourdata.updateTour(tourId, updatenumber)
             console.log("Deleted!");
             window.location.reload();
         }
     };
+
     const text_qrcode = 'ราคาที่ต้องจ่ายทั้งหมด ' + total_price.toLocaleString('en-US') + ' บาท'
     useEffect(() => {
-        qrcode.toDataURL(text_qrcode.toString(), (err, url) => {
+        // Retrieve current tourLeft from database
+        const fetchTourLeft = async () => {
+            const tourData = await Repo.Tourdata.getTourById(tourId);
+            setTourLeft(tourData?.attributes?.number ?? 0);
+        };
+        fetchTourLeft();
+    }, [tourId]);
+    
+
+    useEffect(() => {
+        // Update QR code when total_price or tourLeft changes
+        qrcode.toDataURL(`ราคาที่ต้องจ่ายทั้งหมด ${total_price.toLocaleString('en-US')} บาท จำนวนที่เหลือ ${tourLeft}`, (err, url) => {
             if (err) {
                 console.log(err);
             } else {
@@ -49,7 +61,7 @@ function CardUserStatus(props: Props) {
                 console.log(text_qrcode)
             }
         });
-    }, [total_price]);
+    }, [total_price, tourLeft]);
 
 
     return (

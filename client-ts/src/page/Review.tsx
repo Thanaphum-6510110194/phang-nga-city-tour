@@ -12,7 +12,7 @@ import { userData } from '../helper';
 
 const ReviewPage = () => {
     const [reviews, setReviews] = useState<Review[]>([]);
-    const [tourdata, setTourdata] = useState<Tours[]>([]);
+    const [tourdata, setTourData] = useState<Tours[]>([]);
 
     const user = userData();
     const params = useParams();
@@ -28,7 +28,11 @@ const ReviewPage = () => {
             }
             const tourRes = await Repo.Tourdata.getTourById(params.id as string);
             if (tourRes) {
-                setTourdata(tourRes)
+                if (Array.isArray(tourRes)) {
+                    setTourData(tourRes);
+                } else {
+                    setTourData([tourRes]);
+                }
             }
         } catch (error) {
             console.log(error)

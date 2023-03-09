@@ -16,10 +16,10 @@ export class TourRepository implements IRepository<Tours | numberTour>{
         return data.data;
     }
 
-    async getTourById(id: string): Promise<Tours[] | null> {
+    async getTourById(id: string | number): Promise<Tours | null> {
         const resp = await fetch(`${this.urlPrefix}&filters[id][$eq]=${id}`);
         const data = await resp.json();
-        return data.data;
+        return data.data[0] || null;
     }
 
     async getTourByTitle(title: string): Promise<Tours[] | null> {
