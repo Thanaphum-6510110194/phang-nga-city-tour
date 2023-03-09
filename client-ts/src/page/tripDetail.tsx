@@ -26,14 +26,18 @@ const TripDetail = () => {
 
   const fetchData = async () => {
     try {
-      const res = await Repo.Tourdata.getTourById(params.id as string);
-      if (res) {
-        setTourData(res)
-      }
+        const res = await Repo.Tourdata.getTourById(params.id as string);
+        if (res) {
+            if (Array.isArray(res)) {
+                setTourData(res);
+            } else {
+                setTourData([res]);
+            }
+        }
     } catch (error) {
-      console.log(error)
+        console.log(error);
     }
-  }
+};
 
   useEffect(() => {
     fetchData()
