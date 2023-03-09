@@ -19,7 +19,12 @@ function UserNavbar() {
             </a>
           </div>
         </Navbar.Brand>
-        <Navbar.Collapse id="basic-navbar-nav">
+
+        {!user && (
+        <Navbar.Toggle aria-controls="basic-navbar-nav" className="navbar-toggler" />
+        )}
+        
+        <Navbar.Collapse id="basic-navbar-nav" >
           <Nav className="me-auto">
             <Nav.Link href="/search/All"style={{fontSize: "15px"}} >ค้นหา</Nav.Link>
             <Nav.Link href="/Userstatus"style={{fontSize: "15px"}}>ทัวร์ของคุณ</Nav.Link>
@@ -33,7 +38,7 @@ function UserNavbar() {
             </NavDropdown>
           </Nav>
           {!user && (
-            <Nav className="grid-d">
+            <Nav className="grid-d" >
               <Nav.Link href="/Login">
                 <button type="button" className="btn btn-dark" style={{ width: "100px", whiteSpace: "nowrap" }}>
                   เข้าสู่ระบบ

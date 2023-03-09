@@ -8,6 +8,11 @@ body{
 	background-color: #eee;
 }
 
+.navbar-toggler {
+  order: 3;
+  margin-left: auto;
+}
+
 .custom-toast-success {
   background-color: #5cb85c;
   color: #fff;
