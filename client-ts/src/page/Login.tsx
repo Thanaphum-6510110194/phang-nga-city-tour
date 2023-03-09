@@ -103,7 +103,7 @@ export default function Login() {
                             type="email"
                             id="form2Example17"
                             className="form-control form-control-lg"
-                            placeholder="Email"
+                            placeholder="Email or Username"
                             name="identifier"
                             autoComplete="email"
                             required
