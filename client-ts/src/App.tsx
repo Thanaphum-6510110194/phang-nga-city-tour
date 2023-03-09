@@ -31,7 +31,7 @@ function App() {
         <Route path="/TripDetail" element={<TripDetailPage />} />
         <Route path="/userstatus" element={<LoginRoute><UserStatusPage /></LoginRoute>} />
         <Route path="/history" element={<LoginRoute><HistoryPage /></LoginRoute>} />
-        <Route path="/payment" element={<PaymentPage />} />
+        <Route path="/payment" element={<LoginRoute><PaymentPage /></LoginRoute>} />
       </Routes>
       <ToastContainer />
     </BrowserRouter>
